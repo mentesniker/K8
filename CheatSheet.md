@@ -19,6 +19,7 @@
   - ReplicaSet: A ReplicaSet's purpose is to maintain a stable set of replica Pods running at any given time. As such, it is often used to guarantee the availability of a specified number of identical Pods.
   - Labels are key/value pairs that are attached to objects, such as pods. Labels are intended to be used to specify identifying attributes of objects that are meaningful and relevant to users, but do not directly imply semantics to the core system
   - Scaling is accomplished by changing the number of replicas in a Deployment
+  - Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones.
   
   
 
@@ -49,7 +50,11 @@
 ### Replica sets
   - Get replicas set for a deployment: kubectl get rs
   - Scale replicas for a given deployment: kubectl scale deployments/kubernetes-bootcamp --replicas=4
-  - 
+
+### Updates
+  - Roll back update kubectl rollout undo deployments/kubernetes-bootcamp
+  - Update the image of all the containers inside a pod for the given deployment: kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+  - Check the status of an update kubectl rollout status deployments/kubernetes-bootcamp
 
 ### Services
   - Expose deployment (open ports) and create service: kubectl expose deployment hello-node --type=LoadBalancer --port=8080
@@ -72,4 +77,4 @@
 ## MISC
 
   - Get the name of a pod export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
-  - 
+  - Get the node port of a service export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
